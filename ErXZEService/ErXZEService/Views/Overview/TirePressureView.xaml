@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ErXZEService.Views.Overview.TirePressureView">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+                <Image Source="ZoeTopView.jpg"/>
+            </Grid>
+
+            <Grid Grid.Row="0">
+                <Label HorizontalOptions="Start" VerticalOptions="Center" TextColor="Black" FontSize="25" Margin="40,0,0,0" Text="{Binding CarData.FrontLeftPressure}"></Label>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Label HorizontalOptions="Start" VerticalOptions="Center" TextColor="Black" FontSize="25" Margin="40,0,0,0" Text="{Binding CarData.BackLeftPressure}"></Label>
+            </Grid>
+
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Label HorizontalOptions="End" VerticalOptions="Center" TextColor="Black" FontSize="25" Margin="0,0,20,0" Text="{Binding CarData.FrontRightPressure}"></Label>
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.Column="1">
+                <!-- This should be BackRightPressure -->
+                <Label HorizontalOptions="End" VerticalOptions="Center" TextColor="Black" FontSize="25" Margin="0,0,20,0" Text="{Binding CarData.BackLeftPressure}"></Label>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

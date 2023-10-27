@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ErXZEService.Controls"
+             xmlns:vm="clr-namespace:ErXZEService.ViewModels.Settings"
+             x:Class="ErXZEService.Views.Settings.SettingsView">
+    <ContentPage.Resources>
+        <Style TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="Black"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="BorderColor" Value="White"/>
+            <Setter Property="HasShadow" Value="True"/>
+        </Style>
+
+        <Style TargetType="Entry">
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="PlaceholderColor" Value="Gray"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Margin" Value="0, -4"/>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+        </Style>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Label HorizontalOptions="Center">Currently you need to restart for settings to take effect!</Label>
+
+                <Frame>
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="General" TextColor="#3EC2E0" FontSize="20"/>
+                        </StackLayout>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Autonavigate to LiveView Page"/>
+                                <Switch IsToggled="{Binding Settings.General.AutoNavigateToLiveView, Mode=TwoWay}"
+                                    HorizontalOptions="EndAndExpand" />
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+                <Frame>
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Mqtt" TextColor="#3EC2E0" FontSize="20"/>
+                            <Switch IsToggled="{Binding Settings.Mqtt.Enabled, Mode=TwoWay}"
+                                    HorizontalOptions="EndAndExpand" />
+                        </StackLayout>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Broker Hostname/IP"/>
+                                <Entry Text="{Binding Settings.Mqtt.HostnameOrIp}"
+                                       Placeholder="mqtt.eclipse.org"
+                                       WidthRequest="150"/>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Port"/>
+                                <Entry Text="{Binding Settings.Mqtt.Port}"
+                                       Placeholder="1883"
+                                       WidthRequest="150"/>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Broker Username"/>
+                                <Entry Text="{Binding Settings.Mqtt.Username}"
+                                       Placeholder="username"
+                                       WidthRequest="150"/>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Broker Password"/>
+                                <Entry Text="{Binding Settings.Mqtt.Password}"
+                                       WidthRequest="150"
+                                       IsPassword="true"/>
+                            </StackLayout>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Button Text="Test" WidthRequest="80" HeightRequest="35" Padding="0"
+                                        Command="{Binding TestMqtt}"/>
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="0,0,30,0">
+                                    <Image Source="{Binding Settings.Mqtt.TestState.ImageSource}" HeightRequest="25" WidthRequest="25"/>
+                                    <Label Text="{Binding Settings.Mqtt.TestState.State}"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+                <Frame>
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Abrp live data" TextColor="#3EC2E0" FontSize="20"/>
+                            <Switch HorizontalOptions="EndAndExpand" IsToggled="{Binding Settings.AbrpIntegration.Enabled, Mode=TwoWay}"/>
+                        </StackLayout>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Update interval"/>
+                                <Picker TextColor="White" 
+                                        HorizontalOptions="EndAndExpand"
+                                        WidthRequest="150"
+                                        Title="Update interval" 
+                                        ItemsSource="{Binding Settings.AbrpIntegration.UpdateIntervalTypes}"
+                                        SelectedItem="{Binding Settings.AbrpIntegration.UpdateIntervalType, Mode=TwoWay}"/>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Auto disable after x Charges"/>
+                                <Entry Text="{Binding Settings.AbrpIntegration.AutoDisableTelemetryChargeCount}"
+                                       WidthRequest="150"/>
+                            </StackLayout>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="State of Health"/>
+                                <Entry Text="{Binding Settings.AbrpIntegration.SoH}"
+                                       WidthRequest="150"/>
+                            </StackLayout>
+
+                            <Label Text="User token"/>
+                            <Entry Text="{Binding Settings.AbrpIntegration.UserToken}"
+                                       Placeholder="token generated under generic live data source setting"
+                                       HorizontalOptions="Fill"/>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Button Text="Test" WidthRequest="80" HeightRequest="35" Padding="0"
+                                        Command="{Binding TestAbrpIntegration}"/>
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="0,0,30,0">
+                                    <Image Source="{Binding Settings.AbrpIntegration.TestState.ImageSource}" HeightRequest="25" WidthRequest="25"/>
+                                    <Label Text="{Binding Settings.AbrpIntegration.TestState.State}"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+                <Frame>
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Chargepoint Id Polling" TextColor="#3EC2E0" FontSize="20"/>
+                            <Switch HorizontalOptions="EndAndExpand" IsToggled="{Binding Settings.ChargepointIdPolling.Enabled, Mode=TwoWay}"/>
+                        </StackLayout>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Update interval"/>
+                                <Picker TextColor="White" 
+                                        HorizontalOptions="EndAndExpand"
+                                        WidthRequest="150"
+                                        Title="Update interval" 
+                                        ItemsSource="{Binding Settings.ChargepointIdPolling.UpdateIntervalTypes}"
+                                        SelectedItem="{Binding Settings.ChargepointIdPolling.UpdateIntervalType, Mode=TwoWay}"/>
+                            </StackLayout>
+                            
+                            <StackLayout Orientation="Horizontal">
+                                <Button Text="Test" WidthRequest="80" HeightRequest="35" Padding="0"
+                                        Command="{Binding TestChargepointIdPolling}"/>
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="0,0,30,0">
+                                    <Image Source="{Binding Settings.ChargepointIdPolling.TestState.ImageSource}" HeightRequest="25" WidthRequest="25"/>
+                                    <Label Text="{Binding Settings.ChargepointIdPolling.TestState.State}"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+                <Frame>
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Charger Implementation" TextColor="#3EC2E0" FontSize="20"/>
+                            <Switch HorizontalOptions="EndAndExpand" IsToggled="{Binding Settings.Charger.Enabled, Mode=TwoWay}"/>
+                        </StackLayout>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Charger Type"/>
+                                <Picker TextColor="White" 
+                                        HorizontalOptions="EndAndExpand"
+                                        WidthRequest="150"
+                                        Title="Charger Type" 
+                                        ItemsSource="{Binding Settings.Charger.Types}"
+                                        SelectedItem="{Binding Settings.Charger.Type, Mode=TwoWay}"/>
+                            </StackLayout>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Additional discovery with MAC Address"/>
+                                <Switch HorizontalOptions="EndAndExpand" IsToggled="{Binding Settings.Charger.EnableAdvancedDiscovery, Mode=TwoWay}"/>
+                            </StackLayout>
+
+                            <Label Text="Expected IPs"/>
+                            <Entry Text="{Binding Settings.Charger.PossibleChargerAddresses}"
+                                       Placeholder="192.168.8.101;192.168.8.100"
+                                       HorizontalOptions="Fill"/>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Button Text="Test" WidthRequest="80" HeightRequest="35" Padding="0"
+                                        Command="{Binding TestCharger}"/>
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="0,0,30,0">
+                                    <Image Source="{Binding Settings.Charger.TestState.ImageSource}" HeightRequest="25" WidthRequest="25"/>
+                                    <Label Text="{Binding Settings.Charger.TestState.State}"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+                <Frame>
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Photovoltaic Integration" TextColor="#3EC2E0" FontSize="20"/>
+                            <Switch HorizontalOptions="EndAndExpand" IsToggled="{Binding Settings.PhotovoltaicIntegration.Enabled, Mode=TwoWay}"/>
+                        </StackLayout>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Type"/>
+                                <Picker TextColor="White" 
+                                        HorizontalOptions="EndAndExpand"
+                                        WidthRequest="150"
+                                        Title="Datasource type" 
+                                        ItemsSource="{Binding Settings.PhotovoltaicIntegration.Types}"
+                                        SelectedItem="{Binding Settings.PhotovoltaicIntegration.Type, Mode=TwoWay}"/>
+                            </StackLayout>
+                            <StackLayout>
+                                <Label Text="Mqtt Topic"/>
+                                <Entry Text="{Binding Settings.PhotovoltaicIntegration.FreqencyTopic}" 
+                                       Placeholder="island/frequency"
+                                       HorizontalOptions="Fill"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+                <Button Text="Save" Margin="10" Command="{Binding Save}"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

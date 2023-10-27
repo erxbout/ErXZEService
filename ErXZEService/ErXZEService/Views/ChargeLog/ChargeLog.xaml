@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ErXZEService.ViewModels"
+             x:Class="ErXZEService.Views.ChargeLog">
+    <ContentPage.BindingContext>
+        <vm:ChargeLogViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout>
+            <FlexLayout>
+                <Label FontSize="16" Text="Total kwh this Month: "/>
+                <Label FontSize="16" Text="{Binding TotalKWHActualMonth}" />
+                <Label FontSize="16" Text="kwh"/>
+            </FlexLayout>
+            <FlexLayout>
+                <Label FontSize="16" Text="Total kwh last Month: "/>
+                <Label FontSize="16" Text="{Binding TotalKWHLastMonth}" />
+                <Label FontSize="16" Text="kwh"/>
+            </FlexLayout>
+            <FlexLayout>
+                <Label FontSize="16" Text="Average Charge: "/>
+                <Label FontSize="16" Text="{Binding AvgChargeKWH}" />
+                <Label FontSize="16" Text="kwh"/>
+            </FlexLayout>
+
+            <!--<Label FontSize="16" Text="{Binding ChargeModel.Odometer.StringValue}" />
+
+            <FlexLayout Margin="10,0,0,0">
+                <Label FontSize="16" Text="{Binding ChargeModel.ChargedKWH.StringValue}" />
+
+                <Label FontSize="16" Text="{Binding ChargeModel.ChargedSoCString}" />
+            </FlexLayout>-->
+
+            <ListView ItemsSource="{Binding PageinatedChargeItems}" HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid BackgroundColor="Black">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2"/>
+                                    <RowDefinition Height="58"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Grid.RowSpan="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="7*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="5"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image Grid.Column="1" Source="{Binding ImageSource}"/>
+
+                                    <Label Grid.Row="0" Grid.Column="3" FontSize="19" HorizontalOptions="End" VerticalOptions="Start"
+                                               Text="{Binding MonthCaption}"></Label>
+                                </Grid>
+
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="9*"/>
+                                        <ColumnDefinition Width="5"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackLayout Grid.Column="2">
+                                        <Label FontSize="19" HorizontalOptions="Start" VerticalOptions="End"
+                                               Text="{Binding Caption}"></Label>
+
+                                        <Label FontSize="15" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Gray"
+                                               Text="{Binding SubCaption}"></Label>
+                                    </StackLayout>
+                                </Grid>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand" BackgroundColor="Transparent">
+                <Button Text="Previous" Command="{Binding PreviousPage}" IsEnabled="true"/>
+                <Label Text="{Binding CurrentPageText}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"></Label>
+                <Button Text="Next" Command="{Binding NextPage}" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

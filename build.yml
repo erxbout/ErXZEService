@@ -1,0 +1,59 @@
+
+trigger:
+- dev
+
+pool:
+  name: Build
+
+variables:
+  buildConfiguration: 'Release'
+  outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
+
+jobs:
+- job: DetectChanges
+  steps:
+  - task: Bash@3
+    name: detectedChanges
+    displayName: 'Determine which apps were updated'
+    inputs:
+      filePath: 'detectIfSourceChangedForDockerImages.sh'
+
+- job: BuildAndroid
+  displayName: '[Xamarin.Android] BuildAndPublish apk'
+  steps:
+  - task: NuGetToolInstaller@1
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: '**/*.sln'
+
+  - task: XamarinAndroid@1
+    inputs:
+      projectFile: '**/*droid*.csproj'
+      outputDirectory: '$(Build.ArtifactStagingDirectory)'
+      configuration: '$(buildConfiguration)'
+      msbuildVersionOption: 16.0
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: '$(Build.BuildNumber)'
+      publishLocation: 'FilePath'
+      TargetPath: '\\home\builds\ErXZEService.Android'
+
+- job: BuildMqttServerExtension
+  displayName: '[Docker] MqttServerExtension'
+  dependsOn: DetectChanges
+  variables:
+    TriggerBuild: $[ dependencies.DetectChanges.outputs['detectedChanges.MqttServerExtension'] ]
+  condition: eq(variables['TriggerBuild'], True)
+  steps:
+  - task: Docker@2
+    displayName: 'buildAndPush docker image'
+    inputs:
+      containerRegistry: 'containerregistry'
+      repository: mqttserverextension
+      Dockerfile: '$(Build.Repository.LocalPath)/MqttServerExtension/Dockerfile'
+      buildContext: '$(Build.Repository.LocalPath)'
+      tags: |
+        latest
+        $(Build.SourceBranchName)

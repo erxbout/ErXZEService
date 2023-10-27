@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:plugin="clr-namespace:ProgressRingControl.Forms.Plugin;assembly=ProgressRing.Forms.Plugin"
+             xmlns:gauges="clr-namespace:ErXZEService.Controls.Gauges"
+             xmlns:expander="clr-namespace:ErXZEService.Controls.Expander"
+             xmlns:charger="clr-namespace:ErXZEService.Views.Overview.Charger"
+             xmlns:vm="clr-namespace:ErXZEService.ViewModels"
+             x:Class="ErXZEService.Views.ChargingLiveView">
+    <ContentPage.Resources>
+        <Style TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="#181818"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid BackgroundColor="Black">
+                <Grid.RowDefinitions>
+                    <!-- Overview Percentage -->
+                    <RowDefinition Height="220"/>
+                    <!-- Margin -->
+                    <RowDefinition Height="20"/>
+                    <!-- Rest -->
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+
+                <gauges:ColorRangeGauge Grid.Row="0" Grid.Column="0"
+                        Value="{Binding CarData.BatteryTemperatureFloat}"
+                        VerticalOptions="FillAndExpand"
+                        ValueRange="-10, 45"
+                        Thickness="20"
+                        NeedleColor="Brown"
+                        ValueFontSize="33"                       
+                        UnitsText="°C"
+                        DescriptionText="Battery Temp"
+                        DescriptionFontSize="24"
+                        TextColor="White"/>
+
+                <gauges:ScaledGauge Grid.Row="0" Grid.Column="1"
+                        Value="{Binding CarData.ChargingPower.Value}"
+                        VerticalOptions="FillAndExpand"
+                        ValueRange="24"
+                        Thickness="20"
+                        NeedleColor="Brown"
+                        ValueFontSize="33"                       
+                        UnitsText="kW"
+                        DescriptionText="Power"
+                        DescriptionFontSize="24"
+                        TextColor="White"/>
+
+                <Grid Grid.Row="1" Margin="20,0,0,0">
+                    <FlexLayout Grid.Column="0" Grid.ColumnSpan="2">
+                        <Label TextColor="DimGray" FontSize="12" Text="Timestamp:"></Label>
+                        <Label TextColor="DimGray" FontSize="12" Text=" "></Label>
+                        <Label TextColor="DimGray" FontSize="12" Text="{Binding LastMessageTime}"></Label>
+                    </FlexLayout>
+                </Grid>
+
+                <Grid Grid.Row="2" Margin="10,0,0,0">
+                    <Frame>
+                        <StackLayout>
+                            <Label HorizontalOptions="Center" Text="Pilotsignal" FontSize="18"></Label>
+                            <Label HorizontalOptions="Center" Text="{Binding CarData.PilotSignal}" FontSize="20"></Label>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+                <Grid Grid.Row="3" Margin="10,0,0,0">
+                    <Frame>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <Label Text="SoC" FontSize="20"></Label>
+                                <Label Text="{Binding CarData.SoC.StringValue}" FontSize="20"></Label>
+                            </StackLayout>
+                            <Label HorizontalOptions="Center" Text="{Binding CarData.AvaliableEnergy.StringValue}" FontSize="20"></Label>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.Column="1" Margin="0,0,10,0">
+                    <Frame>
+                        <StackLayout>
+                            <!--<Label Text="{Binding CarData.EstimatedRange}" FontSize="20"></Label>-->
+                            <Label Text="{Binding CarData.TimeToFull}" FontSize="20"></Label>
+                            <Label Text="{Binding CarData.TimeToBoarder}" FontSize="20"></Label>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+                <Grid Grid.Row="3" Grid.Column="1" Margin="0,0,10,0">
+                    <Frame>
+                        <StackLayout>
+                            <Label HorizontalOptions="Center" Text="Max Chargepower" FontSize="18"></Label>
+                            <Label HorizontalOptions="Center" Text="{Binding CarData.MaxChargePossible}" FontSize="20"></Label>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+                <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="10,0">
+                    <Frame>
+                        <StackLayout>
+                            <StackLayout HorizontalOptions="Center">
+                                <StackLayout Orientation="Horizontal" IsVisible="{Binding ABRPTelemetryEnabled}">
+                                    <Image HorizontalOptions="Center" VerticalOptions="End" HeightRequest="25" Source="warning.png"></Image>
+                                    <Label VerticalOptions="Center" Text="ABRP Telemetry enabled!" FontSize="Small"></Label>
+                                </StackLayout>
+                                <Label HorizontalOptions="Center" FontSize="20" Text="Current chargedata"/>
+                                <Label HorizontalOptions="Center" Text="{Binding CurrentChargeModelItem.ChargedSocString}" FontSize="22"></Label>
+                                <Label HorizontalOptions="Center" FontSize="16" Text="{Binding CurrentChargeModelItem.ChargedKwhString}"></Label>
+                                <Label HorizontalOptions="Center" FontSize="16" Text="{Binding CurrentChargeModelItem.ChargedRangeString}"></Label>
+                                <Label HorizontalOptions="Center" FontSize="16" Text="{Binding CurrentChargeModelItem.ChargeRateString}"></Label>
+                                <Label HorizontalOptions="Center" FontSize="16" Text="{Binding CurrentChargeModelItem.ChargeTimeString}"></Label>
+                            </StackLayout>
+
+                            <expander:Expander>
+                                <expander:Expander.PrimaryView>
+                                    <FlexLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Image Source="expand.png" HeightRequest="40"/>
+                                            <Label VerticalOptions="Center" FontSize="20" Text="Charger Implementation"/>
+                                            <Label FontSize="16" Text="{Binding Charger.ConnectionTo}"/>
+                                        </StackLayout>
+                                    </FlexLayout>
+                                </expander:Expander.PrimaryView>
+                                
+                                <expander:Expander.SecondaryViewTemplate>
+                                    <DataTemplate>
+                                        <charger:GoeChargerLiveView/>
+                                    </DataTemplate>
+                                </expander:Expander.SecondaryViewTemplate>
+                            </expander:Expander>
+
+                            <expander:Expander>
+                                <expander:Expander.PrimaryView>
+                                    <FlexLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Image Source="expand.png" HeightRequest="40"/>
+                                            <Label VerticalOptions="Center" FontSize="20" Text="Photovoltaik Integration"/>
+                                        </StackLayout>
+                                    </FlexLayout>
+                                </expander:Expander.PrimaryView>
+
+                                <expander:Expander.SecondaryViewTemplate>
+                                    <DataTemplate>
+                                        <StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="Frequency"/>
+                                                <Label Text="{Binding Frequency}"/>
+                                            </StackLayout>
+
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="OffTime"/>
+                                                <Label Text="{Binding OffTime}"/>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </expander:Expander.SecondaryViewTemplate>
+                            </expander:Expander>
+
+                            <expander:Expander>
+                                <expander:Expander.PrimaryView>
+                                    <FlexLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Image Source="expand.png" HeightRequest="40"/>
+                                            <Label VerticalOptions="Center" FontSize="20" Text="Editables"/>
+                                        </StackLayout>
+                                    </FlexLayout>
+                                </expander:Expander.PrimaryView>
+
+                                <expander:Expander.SecondaryViewTemplate>
+                                    <DataTemplate>
+                                        <StackLayout>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="5"/>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition Width="5*"/>
+                                                    <ColumnDefinition Width="5"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Grid.Column="1" FontSize="17" Text="Name: "></Label>
+                                                <Entry Grid.Column="2" Margin="0,-8,0,0" MinimumWidthRequest="300" HorizontalOptions="Fill" FontSize="16" Text="{Binding CurrentCharge.Caption}"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="5"/>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition Width="5*"/>
+                                                    <ColumnDefinition Width="5"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Grid.Column="1" FontSize="17" Text="Chargepoint ID: "></Label>
+                                                <Entry Grid.Column="2" Margin="0,-8,0,0" MinimumWidthRequest="300" HorizontalOptions="Fill" FontSize="16" Text="{Binding CurrentCharge.ChargePointId}"/>
+                                            </Grid>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="5"/>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition Width="5*"/>
+                                                    <ColumnDefinition Width="5"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Grid.Column="1" FontSize="17" Text="Chargepoint link: "></Label>
+                                                <Entry Grid.Column="2" Margin="0,-8,0,0" HorizontalOptions="Fill" FontSize="16" Text="{Binding CurrentCharge.ChargePointLink}"/>
+                                            </Grid>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </expander:Expander.SecondaryViewTemplate>
+                            </expander:Expander>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

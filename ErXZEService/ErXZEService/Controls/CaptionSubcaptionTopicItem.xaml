@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--caption sub caption image button (csimagebutton)-->
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ErXZEService.Controls"
+             x:Class="ErXZEService.Controls.CaptionSubcaptionTopicItem">
+    <ContentView.Content>
+        <Grid BackgroundColor="Black">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2"/>
+                <RowDefinition Height="58"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Grid.RowSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="9*"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="1" IsVisible="{Binding UseImageSource}" Source="{Binding ImageSource}"/>
+                <controls:DynamicBattery Grid.Column="0" Grid.ColumnSpan="2" IsVisible="{Binding UseDrawnBattery}" FillColor="{Binding FillColor}" PercentFill="{Binding FillPercent}"></controls:DynamicBattery>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="9*"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+
+                <StackLayout Grid.Column="2">
+                    <Label FontSize="19" HorizontalOptions="Start" VerticalOptions="End"
+                                               Text="{Binding Caption}"></Label>
+
+                    <Label FontSize="15" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Gray"
+                                               Text="{Binding SubCaption}"></Label>
+                </StackLayout>
+            </Grid>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

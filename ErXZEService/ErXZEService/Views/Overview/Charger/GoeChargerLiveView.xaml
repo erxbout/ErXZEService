@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ErXZEService.Controls.Expander"
+             x:Class="ErXZEService.Views.Overview.Charger.GoeChargerLiveView">
+    <ContentView.Content>
+        <StackLayout Margin="20,0,0,0">
+            <!--<StackLayout Orientation="Horizontal">
+                <Label Text="Charging State"/>
+                <Label Text="{Binding Charger.DataItem.ChargerState}"/>
+            </StackLayout>-->
+
+            <StackLayout Orientation="Horizontal">
+                <Image Source="BlueThunder.png" HeightRequest="20"/>
+                <Label Text="Desired current:"/>
+                <Label Text="{Binding Charger.DataItem.PilotAmpere}"/>
+                <Label Text="A"/>
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+                    <Button HeightRequest="20" 
+                            Padding="10,0" 
+                            Text="Adjust current"
+                            Command="{Binding ChangeDesiredCurrent}"/>
+                </StackLayout>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Image Source="ElectricCarDriving.png" HeightRequest="20"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label>Session:</Label>
+                    <Label Text="{Binding Charger.DataItem.CurrentChargeKwh}"/>
+                    <Label>kWh</Label>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+                    <Button HeightRequest="20" 
+                            Padding="10,0" 
+                            Text="{Binding ThresholdButtonText}"
+                            Command="{Binding ChangeThreshold}"/>
+                </StackLayout>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" IsVisible="{Binding ProgressVisible}">
+                <Image Source="progressbar_icon.png" HeightRequest="20"/>
+                <Label Text="{Binding ProgressText}"/>
+                <Label Text="{Binding RemainingText}" Padding="5,0" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <ProgressBar Progress="{Binding ProgressValue}" IsVisible="{Binding ProgressVisible}"/>
+            
+            <StackLayout Orientation="Horizontal">
+                <Image Source="chargingstation.png" HeightRequest="20"/>
+                <Label Text="Lifetime charged:"/>
+                <Label Text="{Binding Charger.DataItem.LivetimeChargedKwh}"/>
+                <Label Text="kWh"/>
+            </StackLayout>
+
+            <controls:Expander>
+                <controls:Expander.PrimaryView>
+                    <FlexLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="expand.png" HeightRequest="40"/>
+                            <Label VerticalOptions="Center" Text="{Binding Charger.DataItem.Phases}"/>
+                            <Label VerticalOptions="Center" Text="Phase"/>
+                            <Label VerticalOptions="Center" Text="{Binding Charger.DataItem.Voltage}"/>
+                            <Label VerticalOptions="Center" Text="V "/>
+                            <Label VerticalOptions="Center" Text="{Binding Charger.DataItem.PilotAmpere}"/>
+                            <Label VerticalOptions="Center" Text="A "/>
+                            <Label VerticalOptions="Center" Text="{Binding Charger.DataItem.Power}"/>
+                            <Label VerticalOptions="Center" Text="kW"/>
+                        </StackLayout>
+                    </FlexLayout>
+                </controls:Expander.PrimaryView>
+
+                <controls:Expander.SecondaryViewTemplate>
+                    <DataTemplate>
+                        <StackLayout Margin="40,0,0,0">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="BlueThunder.png" HeightRequest="20"/>
+                                <Label Text="L1 "/>
+                                <Label Text="{Binding Charger.DataItem.VoltageL1}"/>
+                                <Label Text="V "/>
+                                <Label Text="{Binding Charger.DataItem.AmpereL1}"/>
+                                <Label Text="A "/>
+                                <Label Text="{Binding Charger.DataItem.PowerL1}"/>
+                                <Label Text="kW"/>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="BlueThunder.png" HeightRequest="20"/>
+                                <Label Text="L2 "/>
+                                <Label Text="{Binding Charger.DataItem.VoltageL2}"/>
+                                <Label Text="V "/>
+                                <Label Text="{Binding Charger.DataItem.AmpereL2}"/>
+                                <Label Text="A "/>
+                                <Label Text="{Binding Charger.DataItem.PowerL2}"/>
+                                <Label Text="kW"/>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="BlueThunder.png" HeightRequest="20"/>
+                                <Label Text="L3 "/>
+                                <Label Text="{Binding Charger.DataItem.VoltageL3}"/>
+                                <Label Text="V "/>
+                                <Label Text="{Binding Charger.DataItem.AmpereL3}"/>
+                                <Label Text="A "/>
+                                <Label Text="{Binding Charger.DataItem.PowerL3}"/>
+                                <Label Text="kW"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </DataTemplate>
+                </controls:Expander.SecondaryViewTemplate>
+            </controls:Expander>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

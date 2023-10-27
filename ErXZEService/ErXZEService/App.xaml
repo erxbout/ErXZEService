@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ErXZEService.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!--Global Styles-->
+            <Color x:Key="NavigationPrimary">#000000</Color>
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="Black" />
+                <Setter Property="BarTextColor" Value="White" />
+            </Style>
+
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="DarkSlateBlue"></Setter>
+                <Setter Property="TextColor" Value="White"></Setter>
+            </Style>
+
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="White"></Setter>
+            </Style>
+            
+            <Style TargetType="Entry">
+                <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="PlaceholderColor" Value="AliceBlue"></Setter>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

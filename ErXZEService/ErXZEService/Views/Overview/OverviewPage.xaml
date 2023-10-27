@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ErXZEService.ViewModels"
+             xmlns:converter="clr-namespace:ErXZEService.Converter"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:forms="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+             xmlns:controls="clr-namespace:ErXZEService.Controls"
+             x:Class="ErXZEService.Views.OverviewPage"
+             Title="{Binding Title}">
+    <!--<ContentPage.BindingContext>
+        <vm:OverviewViewModel/>
+    </ContentPage.BindingContext>-->
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="BackgroundColor" Value="DarkSlateBlue"></Setter>
+            <Setter Property="TextColor" Value="White"></Setter>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="Center"></Setter>
+            <Setter Property="VerticalOptions" Value="Center"></Setter>
+        </Style>
+        <Style TargetType="Entry">
+            <Setter Property="TextColor" Value="White"></Setter>
+            <Setter Property="PlaceholderColor" Value="AliceBlue"></Setter>
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView>            
+            <Grid BackgroundColor="Black">
+                <Grid.RowDefinitions>
+                    <!-- Overview Percentage -->
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="55"/>
+                    <RowDefinition Height="55"/>
+                    <RowDefinition Height="55"/>
+                    <RowDefinition Height="100"/>
+                    <!-- Margin -->
+                    <RowDefinition Height="20"/>
+                    <!-- Rest -->
+                    <RowDefinition Height="400"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+
+                <Grid Grid.Row="1" Grid.RowSpan="4">
+                    <controls:ProgressRing FillColor="#3EC2E0" Progress="{Binding CarData.DataItem.SoC}"></controls:ProgressRing>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <StackLayout>
+                        <ImageButton 
+                            VerticalOptions="Center" HorizontalOptions="Center"
+                            BackgroundColor="Black"
+                            Source="{Binding CarData.StateImageSource}"
+                            HeightRequest="50"
+                            Command="{Binding ShowTirePressures}"/>
+
+                        <Label Text="{Binding CarData.State}" FontSize="15"></Label>
+                    </StackLayout>
+                </Grid>
+
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="55*" />
+                        <ColumnDefinition Width="45*" />
+                        <ColumnDefinition Width="5" />
+                    </Grid.ColumnDefinitions>
+
+                    <Image VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1"
+                               Source="cruisecontrol.png" 
+                               HeightRequest="50"
+                               MinimumHeightRequest="50"
+                               Margin="0,0,0,0"
+                               IsVisible="{Binding CruiseControlActive}"></Image>
+
+                    <Label VerticalOptions="End" HorizontalOptions="Center" Grid.Column="1"
+                           FontSize="15" 
+                           Text="{Binding CarData.CruiseControlSpeed.StringValue}"
+                           IsVisible="{Binding CruiseControlActive}"/>
+
+                    <StackLayout Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Start">
+                        <Label Text=""/>
+                        <Label Text="{Binding AdditionalInfoLabelText}" IsVisible="{Binding AdditionalInfoLabelTextVisible}"/>
+                    </StackLayout>
+                </Grid>
+
+                <Grid Grid.Row="4">
+                    <StackLayout>
+                        <Label Text="{Binding CarData.SoC.StringValue}" FontSize="22"></Label>
+                        <Label FontSize="16"
+                                    Text="{Binding CarData.EstimatedRange}"></Label>
+                    </StackLayout>
+
+                    <StackLayout HorizontalOptions="End" VerticalOptions="End" Margin="0,0,4,0">
+                        <Label HorizontalOptions="End" Text="{Binding CarData.TripB}"/>
+                        <Label HorizontalOptions="End" Text="{Binding CarData.Odometer}"/>
+                    </StackLayout>
+                </Grid>
+
+                <Grid Grid.Row="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="67*"/>
+                        <ColumnDefinition Width="33*"/>
+                        <ColumnDefinition Width="5"/>
+                    </Grid.ColumnDefinitions>
+
+                    <FlexLayout Grid.Column="1">
+                        <Label TextColor="DimGray" FontSize="12" Text="Timestamp:"></Label>
+                        <Label TextColor="DimGray" FontSize="12" Text=" "></Label>
+                        <Label TextColor="DimGray" FontSize="12" Text="{Binding LastMessageTime}"></Label>
+                    </FlexLayout>
+
+                    <FlexLayout Grid.Column="2">
+                        <Image Source="{Binding ConnectionStateItem.ImageSource}"></Image>
+                        <Label Text=" "></Label>
+                        <Label FontSize="13" Text="{Binding ConnectionStateItem.State}"></Label>
+                    </FlexLayout>
+                </Grid>
+
+                <Grid Grid.Row="6">
+                    <StackLayout>
+                        <ListView ItemsSource="{Binding Topics}" HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <controls:CaptionSubcaptionTopicItem/>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackLayout>
+                </Grid>
+
+                <Grid Grid.Row="7">
+                    <StackLayout>
+                        <Button Text="Prepare Re-Import" Command="{Binding ReImport}"></Button>
+                        <Button Text="Import" Command="{Binding Import}"></Button>
+                        <Button Text="ChangeState" Command="{Binding DebugChangeState}"></Button>
+                    </StackLayout>
+                </Grid>  
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

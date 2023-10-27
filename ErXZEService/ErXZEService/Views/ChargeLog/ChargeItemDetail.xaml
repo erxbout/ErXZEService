@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:converter="clr-namespace:ErXZEService.Controls.TypeConverters"
+             x:Class="ErXZEService.Views.ChargeItemDetail">
+    <ContentPage.Resources>
+        <Style TargetType="BoxView">
+            <Setter Property="HeightRequest" Value="1" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="WidthRequest" Value="200" />
+            <Setter Property="Color" Value="Gray" />
+        </Style>
+
+        <ResourceDictionary>
+            <converter:DecimalValueConverter x:Key="DecimalConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Label FontSize="Medium" Text="Editable data:"></Label>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="5"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="1" FontSize="17" Text="Name: "></Label>
+                    <Entry Grid.Column="2" Margin="0,-8,0,0" MinimumWidthRequest="300" HorizontalOptions="Fill" FontSize="16" Text="{Binding ChargeModel.Item.Caption}"/>
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="5"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="1" FontSize="17" Text="Chargepoint link: "></Label>
+                    <Entry Grid.Column="2" Margin="0,-8,0,0" HorizontalOptions="Fill" FontSize="16" Text="{Binding ChargeModel.Item.ChargePointLink}"/>
+                </Grid>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="5"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="1" FontSize="17" Text="Chargepoint ID: "></Label>
+                    <Entry Grid.Column="2" Margin="0,-8,0,0" HorizontalOptions="Fill" FontSize="16" Text="{Binding ChargeModel.Item.ChargePointId}"/>
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="5"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="1" FontSize="17" Text="Charged by Box: "></Label>
+                    <Entry 
+                        Grid.Column="2"
+                        Margin="0,-8,0,0"
+                        Keyboard="Numeric"
+                        HorizontalOptions="Fill"
+                        FontSize="16"
+                        Text="{Binding ChargeModel.Item.ChargedByBox, StringFormat='{0:#0.000}', Converter={StaticResource DecimalConverter}}"/>
+                    <Label Grid.Column="3" FontSize="17" Text="kWh"></Label>
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="5"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="1" FontSize="17" Text="Cost: "></Label>
+                    <Entry Grid.Column="2"
+                           Margin="0,-8,0,0"
+                           Keyboard="Numeric"
+                           HorizontalOptions="Fill"
+                           FontSize="16"
+                           Text="{Binding ChargeModel.Item.Cost, StringFormat='{0:#0.00}', Converter={StaticResource DecimalConverter}}"/>
+                    <Label Grid.Column="3" FontSize="17" Text="EUR"></Label>
+                </Grid>
+
+                <BoxView></BoxView>
+                
+                <FlexLayout>
+                    <Label FontSize="16" Text="Date: "/>
+                    <Label FontSize="16" Text="{Binding ChargeModel.Date.StringValue}" />
+                </FlexLayout>
+                
+                <FlexLayout>
+                    <Label FontSize="16" Text="Plugged at range: "/>
+                    <Label FontSize="16" Text="{Binding ChargeModel.Item.EstimatedRangeStart}" />
+                    <Label FontSize="16" Text="km"/>
+                </FlexLayout>
+
+                <Label FontSize="16" Text="{Binding ChargeModel.Odometer.StringValue}" />
+                
+                <BoxView></BoxView>
+                <Label Margin="1,0,0,0" FontSize="18" Text="Costs: " />
+                <FlexLayout Margin="10,0,0,0">
+                    <Label FontSize="16">Cost:</Label>
+                    <Label FontSize="16" Margin="10,0,0,0" Text="{Binding ChargeModel.PricePerKwhString}"></Label>
+                </FlexLayout>
+                <FlexLayout Margin="10,0,0,0">
+                    <Label FontSize="16">Losses:</Label>
+                    <Label FontSize="16" Margin="5,0,0,0" Text="{Binding ChargeModel.Losses}"></Label>
+                </FlexLayout>
+                
+                <BoxView></BoxView>
+                <Label Margin="1,0,0,0" FontSize="18" Text="Distances: " />
+                <StackLayout Margin="10,0,0,0">
+                    <Label FontSize="16" Text="{Binding ChargeModel.DrivenDistance}" />
+                    <Label FontSize="16" Text="{Binding ChargeModel.DrivenKWH}" />
+                    <Label FontSize="16" Text="{Binding ChargeModel.AvgConsumption}" />
+                    <Label FontSize="16" Text="{Binding ChargeModel.EstimatedFullChargeDistance}" />
+                </StackLayout>
+
+                <BoxView></BoxView>
+                <Label Margin="1,0,0,0" FontSize="18" Text="ChargeStats: " />
+
+                <FlexLayout Margin="10,0,0,0">
+                    <Label FontSize="16" Text="{Binding ChargeModel.ChargedUntilAvaliableEnergy}" />
+                </FlexLayout>
+
+                <FlexLayout Margin="10,0,0,0">
+                    <Label FontSize="16" Text="{Binding ChargeModel.ChargedKWH.StringValue}" />
+
+                    <Label FontSize="16" Text="{Binding ChargeModel.ChargedSoCString}" />
+                </FlexLayout>
+
+                <StackLayout Margin="10,0,0,0">
+                    <Label FontSize="16" Text="{Binding ChargeModel.ChargePointPower}" />
+                    <Label FontSize="16" Text="{Binding ChargeModel.AvgChargePower}" />
+                    <Label FontSize="16" Text="{Binding ChargeModel.BreakEven}" />
+                </StackLayout>
+
+                <microcharts:ChartView HeightRequest="300" Chart="{Binding ChargePowerChart}" IsVisible="{Binding ShowChargePowerChart}"/>
+
+                <BoxView></BoxView>
+                <Label Margin="1,0,0,0" FontSize="18" Text="BatteryStats: " />
+                <StackLayout Margin="10,0,0,0">
+                    <Label FontSize="16" Text="{Binding ChargeModel.AmbientTemperature}" />
+                    <Label FontSize="16" Text="{Binding ChargeModel.MaxBatteryTemperature}" />
+                    <Label FontSize="16" Text="{Binding ChargeModel.MinBatteryTemperature}" />
+                    <Label FontSize="16" Text="{Binding ChargeModel.AvgBatteryTemperature}" />
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

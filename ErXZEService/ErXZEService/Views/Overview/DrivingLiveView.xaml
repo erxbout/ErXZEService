@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:ErXZEService.Controls.Gauges"
+             xmlns:vm="clr-namespace:ErXZEService.ViewModels"
+             x:Class="ErXZEService.Views.DrivingLiveView">
+    <ContentPage.Resources>
+        <Style TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="Black"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid BackgroundColor="Black">
+                <Grid.RowDefinitions>
+                    <!-- Overview Percentage -->
+                    <RowDefinition Height="220"/>
+                    <!-- margin -->
+                    <RowDefinition Height="20"/>
+                    <!-- Rest -->
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <controls:ColorRangeGauge
+                        Value="{Binding CarData.BatteryTemperatureFloat}"
+                        Thickness="20"
+                        ValueRange="-10, 45"
+                        NeedleColor="Brown"
+                        ValueFontSize="33"                       
+                        UnitsText="°C"
+                        DescriptionText="Battery Temp"
+                        DescriptionFontSize="24"
+                        TextColor="White"/>
+                </Grid>
+
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <controls:ScaledGauge 
+                        Value="{Binding CarData.EngineRPM}"
+                        Thickness="20"
+                        ValueRange="12000"
+                        NeedleColor="Brown"
+                        ValueFontSize="30"                       
+                        UnitsText=""
+                        DescriptionText="RPM"
+                        DescriptionFontSize="24"
+                        TextColor="White"/>
+                </Grid>
+
+                <Grid Grid.Row="1" Margin="20,0,0,0">
+                    <FlexLayout Grid.Column="0" Grid.ColumnSpan="3">
+                        <Label TextColor="DimGray" FontSize="12" Text="Timestamp:"></Label>
+                        <Label TextColor="DimGray" FontSize="12" Text=" "></Label>
+                        <Label TextColor="DimGray" FontSize="12" Text="{Binding LastMessageTime}"></Label>
+                    </FlexLayout>
+                </Grid>
+
+                <Grid Grid.Row="2" Margin="10,0,0,0">
+                    <Frame>
+                        <StackLayout Orientation="Horizontal">
+                            <Image VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1"
+                                       Source="{Binding CarData.CruiseControlImageSource}" 
+                                       HeightRequest="45"
+                                       MinimumHeightRequest="45"/>
+                            <Label HorizontalOptions="End" VerticalOptions="Center" Text="{Binding CarData.CruiseControlSpeed.StringValue}" FontSize="24"></Label>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.Column="1" Margin="0,0,10,0">
+                    <Frame>
+                        <StackLayout Orientation="Horizontal">
+                            <Image VerticalOptions="Center" HorizontalOptions="Center"
+                                       Source="BlueThunder.png" 
+                                       HeightRequest="45"
+                                       MinimumHeightRequest="45"/>
+                            <StackLayout Orientation="Vertical">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label FontSize="18">InOut</Label>
+                                    <Label HorizontalOptions="End" VerticalOptions="Center" Text="{Binding CarData.Consumption}" FontSize="21"></Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label FontSize="18">MaxIn</Label>
+                                    <Label HorizontalOptions="End" VerticalOptions="Center" Text="{Binding CarData.MaxChargePossible}" FontSize="21"></Label>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+                <Grid Grid.Row="3" Margin="10,0,0,0">
+                    <Frame>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <!--<controls1:DynamicBattery HeightRequest="20" WidthRequest="40"/>-->
+                                <Label Text="SoC" FontSize="22"></Label>
+                                <Label Text="{Binding CarData.SoC.StringValue}" FontSize="22"></Label>
+                            </StackLayout>
+                            <Label HorizontalOptions="Center" Text="{Binding CarData.AvaliableEnergy.StringValue}" FontSize="22"></Label>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+                <Grid Grid.Row="3" Grid.Column="1" Margin="0,0,10,0">
+                    <Frame>
+                        <StackLayout>
+                            <Label HorizontalOptions="Center" Text="{Binding CarData.EstimatedRange}" FontSize="20"></Label>
+                            <Label HorizontalOptions="Center" Text="{Binding CurrentTripModelItem.EstimatedConsumptionRange}" FontSize="20"></Label>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+                <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="10,0">
+                    <Frame>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal" IsVisible="{Binding ABRPTelemetryEnabled}">
+                                <Image HorizontalOptions="Center" VerticalOptions="End" HeightRequest="25" Source="warning.png"></Image>
+                                <Label VerticalOptions="Center" Text="ABRP Telemetry enabled!" FontSize="Small"></Label>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label HorizontalOptions="Center" Text="{Binding CurrentTripModelItem.TripDistance}" FontSize="22"></Label>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label HorizontalOptions="Center" Text="{Binding CurrentTripModelItem.UsedEnergy}" FontSize="22"></Label>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label HorizontalOptions="Center" Text="{Binding CurrentTripModelItem.AverageConsumption}" FontSize="22"></Label>
+                            </StackLayout>
+                                
+                            <StackLayout Orientation="Horizontal" Margin="0,10">
+                                <Label FontSize="22">ClimaMode :</Label>
+                                <Label HorizontalOptions="Center" Text="{Binding CarData.ClimaMode}" FontSize="22"></Label>
+                            </StackLayout>
+                            
+                            <StackLayout Orientation="Horizontal" MinimumWidthRequest="550">
+                                <Label MinimumWidthRequest="200" FontSize="17" Text="Next Chargepoint ID: " VerticalOptions="Center"></Label>
+                                <Entry HorizontalOptions="StartAndExpand" VerticalOptions="Center" FontSize="17" Text="{Binding CurrentTripModelItem.Item.NextChargePointId}" Placeholder="AT*EST*E000*12345678" PlaceholderColor="Black"/>
+                            </StackLayout>
+
+                            <StackLayout Orientation="Horizontal" Margin="0,-10">
+                                <Label FontSize="22">Status:</Label>
+                                <Label HorizontalOptions="Center" Text="{Binding CurrentTripModelItem.Item.NextChargePointAvailableStatus}" FontSize="22"></Label>
+                            </StackLayout>
+                            
+                            <StackLayout Orientation="Horizontal">
+                                <Label FontSize="22">WifiSequenceNumber:</Label>
+                                <Label HorizontalOptions="Center" Text="{Binding WifiSequenceNumber}" FontSize="22"></Label>
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

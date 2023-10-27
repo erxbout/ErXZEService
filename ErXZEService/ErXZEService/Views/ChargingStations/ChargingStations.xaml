@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:vm="clr-namespace:ErXZEService.ViewModels"
+             x:Class="ErXZEService.Views.ChargeStations">
+    <ContentPage.BindingContext>
+        <vm:ChargingStationsViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <WebView Source="{Binding HtmlSource}">
+            
+        </WebView>
+    </ContentPage.Content>
+</ContentPage>
