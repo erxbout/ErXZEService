@@ -21,5 +21,7 @@ Communication can be established via
 The android app collects the data and saves historical information like trips and charges
 It does not capture all the missed data and events, the data on the SD Card is the single source of truth for the full set of data!
 In the app are many tiny features that can not be accessed without understanding where to look, so its not very user friendly..
+
 App looks like this
+
 ![Android cleaned_compressed](https://github.com/erxbout/ErXZEService/assets/68945126/714e6b5b-d468-41d7-ad94-1b5d207ed09e)
