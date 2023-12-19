@@ -9,8 +9,10 @@ Feel free to create issues or prs, if enough people are interested I might be mo
 ## Hardware
 ![electronics_incar_compressed](https://github.com/erxbout/ErXZEService/assets/68945126/bfd4d1d3-e320-4f6e-8f48-ceb64af5edaa)
 The hardware is split in 2 layers
-First layer is an Arduino UNO with an attached CAN Bus shield (Spark Fun). It only does sniffing on the CAN Bus. Saves data on SD Card
+First layer is an Arduino UNO with an attached CAN Bus shield (Spark Fun). It only does sniffing on the CAN Bus. Saves data on SD Card and sends data via uart to the second layer..
+<br>
 Second layer is an ESP8266. This device is responsible for communication with the outside world.
+<br>
 Communication can be established via
 - Wifi (ESP Access Point)
 - Wifi (External AP)
